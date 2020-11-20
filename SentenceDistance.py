@@ -27,7 +27,6 @@ class SentenceDistance:
     self.infersent.update_vocab(sentences)
     vectorized_tweet, vectorized_summary = self.infersent.encode(sentences, tokenize=True)
     dist = ((vectorized_tweet-vectorized_summary)**2).sum()
-    print(dist)
     return dist
     
 if __name__ == '__main__':
@@ -36,4 +35,29 @@ if __name__ == '__main__':
   summary = ""
   for paragraph in open('dummySummary.txt', 'r'):
     summary += paragraph
-  a.similarity(summary, tweet)
+  result = a.similarity(summary, tweet)
+  print("Tweet to Summary: {}".format(result))
+  result = a.similarity(
+    'I was walking by the store and saw a lady with a broken nose', 
+    "Just outside of Vons, a girl was crying with a bloody nose."
+  )
+  print("Paraphrase: {}".format(result))
+  
+  result = a.similarity(
+    'Coding sometimes can be very tedious and time consuming', 
+    "Whoever becomes the president of the United States, he'll be better than Trump"
+  )
+  print("Not: {}".format(result))
+  
+  result = a.similarity(
+    'Coding sometimes can be very tedious and time consuming', 
+    "Sometimes, I find that programming is too laborious and I want to give it up"
+  )
+  print("Paraphrase: {}".format(result))
+  
+  result = a.similarity(
+    'Trump might be the worse president of all time.', 
+    "Whoever becomes the president of the United States, he'll be better than Trump"
+  )
+  print("Paraphrase: {}".format(result))
+  
