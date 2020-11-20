@@ -2,7 +2,7 @@ import torch
 from transformers import DistilBertModel, DistilBertTokenizer
 from sklearn.neighbors import DistanceMetric
 
-class SpoilerDetection:
+class WordDistance:
   def __init__(self):
     self.tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
     self.embedding = DistilBertModel.from_pretrained('distilbert-base-uncased')
@@ -33,7 +33,7 @@ class SpoilerDetection:
     print(distances)
 
 if __name__ == '__main__':
-  a = SpoilerDetection()
+  a = WordDistance()
   tweet = open('dummyTweet.txt', 'r').read()
   summary = ""
   for paragraph in open('dummySummary.txt', 'r'):
