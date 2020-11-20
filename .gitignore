@@ -2,4 +2,5 @@
 InferSent/crawl-300d-2M.vec
 InferSent/infersent1.pkl
 InferSent/infersent2.pkl
+InferSent/__pycache__
 crawl-300d-2M.vec.zip
