@@ -1,0 +1,5 @@
+# large files (>150MB)
+InferSent/crawl-300d-2M.vec
+InferSent/infersent1.pkl
+InferSent/infersent2.pkl
+crawl-300d-2M.vec.zip
