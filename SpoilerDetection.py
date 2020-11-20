@@ -1,5 +1,4 @@
 import torch
-from sklearn.neighbors import DistanceMetric
 from transformers import DistilBertModel, DistilBertTokenizer
 from sklearn.neighbors import DistanceMetric
 
@@ -23,20 +22,15 @@ class SpoilerDetection:
     return vectorized_sentence
     
   def similarity(self, summary, tweet):
-    semantic_matrix = self.vectorize(tweet)
+    vectorized_tweet = self.vectorize(tweet)
 
     # assume that summary can be broken down into paragraphs
-    count = 1 # 1 because of the tweet
-    tweet_to_paragraph_distances = []
+    distances = []
     for i in summary.split("\n"):
-      count += 1
       vectorized = self.vectorize(i)
-      semantic_matrix = torch.cat((semantic_matrix, vectorized), dim=0)
-    semantic_matrix = semantic_matrix.detach().numpy()
-    semantic_matrix = semantic_matrix.view(count, semantic_matrix.shape)
-    dist = DistanceMetric.get_metric('euclidean')
-    result = dist.pairwise(semantic_matrix)
-    print(result.shape)
+      dist = ((vectorized_tweet-vectorized)**2).sum()
+      distances.append(dist.item())
+    print(distances)
 
 if __name__ == '__main__':
   a = SpoilerDetection()
