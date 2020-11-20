@@ -110,8 +110,8 @@ class InferSent(nn.Module):
         word, vec = line.split(' ', 1)
         if word in word_dict:
           word_vec[word] = np.fromstring(vec, sep=' ')
-    print('Found %s(/%s) words with w2v vectors' %
-          (len(word_vec), len(word_dict)))
+    #print('Found %s(/%s) words with w2v vectors' %
+    #      (len(word_vec), len(word_dict)))
     return word_vec
 
   def get_w2v_k(self, K):
@@ -161,8 +161,8 @@ class InferSent(nn.Module):
       self.word_vec.update(new_word_vec)
     else:
       new_word_vec = []
-    print('New vocab size : %s (added %s words)' %
-          (len(self.word_vec), len(new_word_vec)))
+    #print('New vocab size : %s (added %s words)' %
+    #      (len(self.word_vec), len(new_word_vec)))
 
   def get_batch(self, batch):
     # sent in batch in decreasing order of lengths

@@ -15,7 +15,7 @@ class SentenceDistance:
       'pool_type': 'max',
       'dpout_model': 0.0,
       'version': INFERSENT_VERSION
-    }
+    } # this cannot be changed since we are loading a pre-trained model
     self.infersent = InferSent(params_model)
     self.infersent.load_state_dict(torch.load(MODEL_PATH))
     self.infersent.set_w2v_path(W2V_PATH)
@@ -29,6 +29,46 @@ class SentenceDistance:
     dist = ((vectorized_tweet-vectorized_summary)**2).sum()
     return dist
     
+def find_threshold(sentenceDistanceObj):
+  import pandas as pd
+  import csv
+  from tqdm import tqdm
+  paraphrases = pd.read_csv("InferSent/msr_paraphrase_train.txt", sep="\t", quoting=csv.QUOTE_NONE)
+  paraphrases = paraphrases.query("Quality==1").sample(10)
+  sentence_ones = paraphrases["#1 String"].tolist()
+  sentence_twos = paraphrases["#2 String"].tolist()
+  para_score = 0
+  non_score = 0
+  for index_i, i in enumerate(sentence_ones):
+    print(index_i)
+    for index_j, j in tqdm(enumerate(sentence_twos)):
+      if index_i == index_j:
+        para_score += sentenceDistanceObj.similarity(i, j)
+      else:
+        non_score += sentenceDistanceObj.similarity(i, j)
+  para_score /= len(sentence_ones)
+  non_score /= (len(sentence_ones)**2-len(sentence_ones))
+  print("P: {} \t N: {}".format(para_score, non_score))
+
+def custom_tests(a):
+  ones = [
+    'I was walking by the store and saw a lady with a broken nose', 
+    'Coding sometimes can be very tedious and time consuming', 
+    'Trump might be the worse president of all time.', 
+  ]
+  twos = [
+    "Just outside of Vons, a girl was crying with a bloody nose.",
+    "Sometimes, I find that programming is too laborious and I want to give it up",
+    "Whoever becomes the president of the United States, he'll be better than Trump"
+  ]
+  for i, si in enumerate(ones):
+    for j, sj in enumerate(twos):
+      result = a.similarity(si, sj)
+      if i==j:
+        print("P: {}".format(result))
+      else:
+        print("N: {}".format(result))
+
 if __name__ == '__main__':
   a = SentenceDistance()
   tweet = open('dummyTweet.txt', 'r').read()
@@ -37,27 +77,7 @@ if __name__ == '__main__':
     summary += paragraph
   result = a.similarity(summary, tweet)
   print("Tweet to Summary: {}".format(result))
-  result = a.similarity(
-    'I was walking by the store and saw a lady with a broken nose', 
-    "Just outside of Vons, a girl was crying with a bloody nose."
-  )
-  print("Paraphrase: {}".format(result))
-  
-  result = a.similarity(
-    'Coding sometimes can be very tedious and time consuming', 
-    "Whoever becomes the president of the United States, he'll be better than Trump"
-  )
-  print("Not: {}".format(result))
-  
-  result = a.similarity(
-    'Coding sometimes can be very tedious and time consuming', 
-    "Sometimes, I find that programming is too laborious and I want to give it up"
-  )
-  print("Paraphrase: {}".format(result))
-  
-  result = a.similarity(
-    'Trump might be the worse president of all time.', 
-    "Whoever becomes the president of the United States, he'll be better than Trump"
-  )
-  print("Paraphrase: {}".format(result))
-  
+  print("==============================")
+  custom_tests(a)
+  print("==============================")
+  find_threshold(a)
