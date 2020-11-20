@@ -8,10 +8,21 @@ Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-Bring up flask environemnt:
+Bring up flask app:
 ```bash
 flask run
 ```
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+
+
+* [Aaron](https://github.ccs.neu.edu/suyue)
+* [Honrao](https://github.ccs.neu.edu/yibao)
+* [Nikita](https://github.ccs.neu.edu/fionahu)
+* [Rachel](https://github.ccs.neu.edu/yufeng1)
+* [Raxit](https://github.ccs.neu.edu/huichenliu)
 
 
 <!-- Markdown link & img dfn -->
