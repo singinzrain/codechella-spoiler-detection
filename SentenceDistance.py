@@ -21,53 +21,69 @@ class SentenceDistance:
     self.infersent.set_w2v_path(W2V_PATH)
     self.infersent.build_vocab_k_words(K=100000)
 
-
-  def similarity(self, summary, tweet):
-    sentences = [tweet, summary]
+  def similarity(self, sentence_one, sentence_two):
+    sentences = [sentence_one, sentence_two]
     self.infersent.update_vocab(sentences)
-    vectorized_tweet, vectorized_summary = self.infersent.encode(sentences, tokenize=True)
-    dist = ((vectorized_tweet-vectorized_summary)**2).sum()
+    vectorized_one, vectorized_two = self.infersent.encode(sentences, tokenize=True)
+    dist = ((vectorized_one-vectorized_two)**2).sum()
     return dist
+  
+  def classify_spoiler(self, tweet, summary, threshold=5.0):
+    for sentence in summary.split("."):
+      score = self.similarity(tweet, sentence)
+      print("{} : {}".format(score, sentence))
+      print("===============")
+      if score < threshold:
+        return True
+    return False
     
-def find_threshold(sentenceDistanceObj):
-  import pandas as pd
-  import csv
+def find_threshold(model, sentences):
   from tqdm import tqdm
-  paraphrases = pd.read_csv("InferSent/msr_paraphrase_train.txt", sep="\t", quoting=csv.QUOTE_NONE)
-  paraphrases = paraphrases.query("Quality==1").sample(10)
-  sentence_ones = paraphrases["#1 String"].tolist()
-  sentence_twos = paraphrases["#2 String"].tolist()
+  sentence_ones, sentence_twos = sentences
   para_score = 0
   non_score = 0
-  for index_i, i in enumerate(sentence_ones):
-    print(index_i)
-    for index_j, j in tqdm(enumerate(sentence_twos)):
+  para_list = []
+  non_list = []
+  N = len(sentence_ones)
+  print("Total Pairs to Iterate: {}".format(N))
+  for index_i, i in tqdm(enumerate(sentence_ones)):
+    for index_j, j in enumerate(sentence_twos):
+      s = model.similarity(i, j)
       if index_i == index_j:
-        para_score += sentenceDistanceObj.similarity(i, j)
+        para_score += s
+        para_list.append(s)
       else:
-        non_score += sentenceDistanceObj.similarity(i, j)
-  para_score /= len(sentence_ones)
-  non_score /= (len(sentence_ones)**2-len(sentence_ones))
-  print("P: {} \t N: {}".format(para_score, non_score))
+        non_score += s
+        non_list.append(s)
+  para_score /= N
+  non_score  /= N**2 - N
 
-def custom_tests(a):
+  print("P: {} - {}".format(para_score, para_list))
+  print("N: {} - {}".format(non_score, non_list))
+  
+def mrpc_tests(model, sample_size=10):
+  import pandas as pd
+  import csv
+  paraphrases = pd.read_csv("InferSent/msr_paraphrase_train.txt", sep="\t", quoting=csv.QUOTE_NONE)
+  paraphrases = paraphrases.query("Quality==1").sample(sample_size)
+  sentence_ones = paraphrases["#1 String"].tolist()
+  sentence_twos = paraphrases["#2 String"].tolist()
+  find_threshold(model, (sentence_ones, sentence_twos))
+
+def custom_tests(model):
   ones = [
+    'Following Stark\'s funeral, Thor appoints Valkyrie as the new ruler of New Asgard and joins the Guardians',
     'I was walking by the store and saw a lady with a broken nose', 
     'Coding sometimes can be very tedious and time consuming', 
     'Trump might be the worse president of all time.', 
   ]
   twos = [
+    'Why this is happening now that tmw the spn episode premieres and i\'m gonna see Tony Stark die again.',
     "Just outside of Vons, a girl was crying with a bloody nose.",
     "Sometimes, I find that programming is too laborious and I want to give it up",
     "Whoever becomes the president of the United States, he'll be better than Trump"
   ]
-  for i, si in enumerate(ones):
-    for j, sj in enumerate(twos):
-      result = a.similarity(si, sj)
-      if i==j:
-        print("P: {}".format(result))
-      else:
-        print("N: {}".format(result))
+  find_threshold(model, (ones, twos))
 
 if __name__ == '__main__':
   a = SentenceDistance()
@@ -75,9 +91,10 @@ if __name__ == '__main__':
   summary = ""
   for paragraph in open('dummySummary.txt', 'r'):
     summary += paragraph
-  result = a.similarity(summary, tweet)
-  print("Tweet to Summary: {}".format(result))
+  
+  #result = a.classify_spoiler(tweet, summary, threshold=0.0)
+  
   print("==============================")
   custom_tests(a)
-  print("==============================")
-  find_threshold(a)
+  #print("==============================")
+  #mrpc_tests(a)
