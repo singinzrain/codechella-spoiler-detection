@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import jsonify
+import TweepyWrapper
 
 from model.tweet import Tweet
 
@@ -13,11 +14,11 @@ def hello_world():
 
 @app.route('/tweets')
 def get_tweets():
-    # mock
-    # should get from core
-    tweet = Tweet()
-    tweet.content = "test"
-    tweets = [tweet.__dict__]
+    tweets = TweepyWrapper.get_trending_tweets_in_LA()
+    return jsonify(tweets)
+
+@app.route('/similarTweets')
+def get_similar_tweets():
 
     return jsonify(tweets)
 
