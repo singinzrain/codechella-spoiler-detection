@@ -70,18 +70,29 @@ def mrpc_tests(model, sample_size=10):
   sentence_twos = paraphrases["#2 String"].tolist()
   find_threshold(model, (sentence_ones, sentence_twos))
 
-def custom_tests(model):
+def custom_tests_one(model):
   ones = [
-    'Following Stark\'s funeral, Thor appoints Valkyrie as the new ruler of New Asgard and joins the Guardians',
     'I was walking by the store and saw a lady with a broken nose', 
     'Coding sometimes can be very tedious and time consuming', 
     'Trump might be the worse president of all time.', 
   ]
   twos = [
-    'Why this is happening now that tmw the spn episode premieres and i\'m gonna see Tony Stark die again.',
     "Just outside of Vons, a girl was crying with a bloody nose.",
     "Sometimes, I find that programming is too laborious and I want to give it up",
     "Whoever becomes the president of the United States, he'll be better than Trump"
+  ]
+  find_threshold(model, (ones, twos))
+
+def custom_tests_two(model):
+  ones = [
+    'Following Stark\'s funeral,',
+    'Following Stark\'s funeral, Thor appoints Valkyrie as the new ruler of New Asgard and joins the Guardians',
+    'Following Stark\'s funeral, Thor appoints Valkyrie as the new ruler of New Asgard and joins the Guardians', 
+  ]
+  twos = [
+    "Dawg it’s still tough watching tony stark die",
+    "the last time I cried this hard I watched Tony Stark die in endgame I literally feel like death #UnusAnnus",
+    "literally my entire classroom the day after kt came out was TONY STARK DIES HEHEHEHE",
   ]
   find_threshold(model, (ones, twos))
 
@@ -95,6 +106,8 @@ if __name__ == '__main__':
   #result = a.classify_spoiler(tweet, summary, threshold=0.0)
   
   print("==============================")
-  custom_tests(a)
+  custom_tests_one(a)
+  print("==============================")
+  custom_tests_two(a)
   #print("==============================")
   #mrpc_tests(a)
