@@ -6,3 +6,4 @@ InferSent/glove.840B.300d.txt
 InferSent/__pycache__
 crawl-300d-2M.vec.zip
 glove.840B.300d.zip
+frontend/.env
