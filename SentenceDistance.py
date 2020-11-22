@@ -23,7 +23,7 @@ class SentenceDistance:
 
   def similarity(self, sentence_one, sentence_two):
     sentences = [sentence_one, sentence_two]
-    self.infersent.update_vocab(sentences)
+    #self.infersent.update_vocab(sentences)
     vectorized_one, vectorized_two = self.infersent.encode(sentences, tokenize=True)
     dist = ((vectorized_one-vectorized_two)**2).sum()
     return dist
