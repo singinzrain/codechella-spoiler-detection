@@ -38,7 +38,7 @@ class Tweets extends Component{
           <p className="card-text">{tweet.text}</p>              
       </div>
       <div className="row">      
-          <Link className="btn btn-raised btn-primary btn-sm col-md-4 offset-md-4" to={`/similar/${tweet.id}}`}>View Similar Tweets</Link>                  
+          <Link className="btn btn-raised btn-primary btn-sm col-md-4 offset-md-4" to={`/similarTweets/${tweet.id}`}>View Similar Tweets</Link>                  
       </div>
       <p className="font-italic mark ">PostedBy: <a  href={`http://twitter.com/${tweet.screen_name}`}> {tweet.username} </a> on {new Date(tweet.created_at).toDateString()}</p></div> 
     ))}
