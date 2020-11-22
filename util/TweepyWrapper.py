@@ -30,10 +30,10 @@ class TweepyWrapper:
 
   def get_tweets_by_keyword(self, keyword, limit=15) -> List[Status]:
     results = []
-    r: SearchResults = self.api.search(q=keyword, count=limit)
+    r: SearchResults = self.api.search(q=keyword)
     print(r.__dict__)
     if len(r) > 0:
-      results.append(r[0])
+      results.extend(r)
     return results
 
   def get_tweet(self, tweet_id) -> Status:
