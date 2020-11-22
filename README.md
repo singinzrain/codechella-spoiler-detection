@@ -30,7 +30,7 @@ This project exists thanks to all the people who contribute.
 * [Honrao](https://github.com/Honrao-Akshata)
 * [Nikita](https://github.com/nikitagawde10)
 * [Rachel](https://github.com/singinzrain)
-* [Raxit](https://github.com/Maxrovr)
+* [Rakshith](https://github.com/Maxrovr)
 
 
 <!-- Markdown link & img dfn -->
