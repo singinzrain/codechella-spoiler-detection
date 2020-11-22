@@ -1,3 +1,5 @@
+from typing import List
+
 import spacy
 nlp = spacy.load("en_core_web_sm")
 # example text
@@ -10,6 +12,15 @@ with Interstellar and Tenet, when I looked things up on Wikipedia, there were se
 doc = nlp(text2)
 for ent in doc.ents:
     print(ent.text, ent.label_)
+
+
+def get_entities(text: str) -> List[str]:
+    doc = nlp(text)
+    result = [ent.text for ent in doc.ents]
+    print(result)
+    return result
+
+# python -m spacy download en_core_web_sm
 # import nltk
 # import re
 # import math
