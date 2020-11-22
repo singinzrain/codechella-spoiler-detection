@@ -9,7 +9,7 @@ export const list = () =>{
   }
 
   export const similarTweets = (id) =>{
-    return fetch(`${process.env.REACT_APP_API_URL}/similarTweets`,{
+    return fetch(`${process.env.REACT_APP_API_URL}/similarTweets/{id}`,{
       method:"GET"
     })
     .then( response => {

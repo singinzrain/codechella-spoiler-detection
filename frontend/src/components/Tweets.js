@@ -1,6 +1,6 @@
  import React,{Component} from 'react';
- import {list} from '../services/mock';
- //import {list} from '../services/service';
+ //import {list} from '../services/mock';
+ import {list} from '../services/service';
  import { Link } from "react-router-dom";
  
 class Tweets extends Component{
@@ -33,14 +33,14 @@ class Tweets extends Component{
   
 
     {tweets.map((tweet,i) => (
-      <div className="card col-md-4"  key={i} style={{width: "17rem"}}>       
-        <div className="card-body">
-          <h5 className="card-title">{tweet.id}</h5>
-          <p className="card-text">{tweet.tweet}</p>          
-          <Link className="btn btn-raised btn-primary btn-sm" to={`/similar/${tweet.id}}`}>View Similar Tweets</Link>         
-        </div>
-        
+      <div className="card col-md-4  mx-2 my-2"   key={i} style={{width: "16rem"}}>       
+        <div className="card-body">          
+          <p className="card-text">{tweet.text}</p>              
       </div>
+      <div className="row">      
+          <Link className="btn btn-raised btn-primary btn-sm col-md-4 offset-md-4" to={`/similar/${tweet.id}}`}>View Similar Tweets</Link>                  
+      </div>
+      <p className="font-italic mark ">PostedBy: <a  href={`http://twitter.com/${tweet.screen_name}`}> {tweet.username} </a> on {new Date(tweet.created_at).toDateString()}</p></div> 
     ))}
     </div>
   )
