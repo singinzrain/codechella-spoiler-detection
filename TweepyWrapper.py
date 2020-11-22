@@ -23,8 +23,12 @@ class TweepyWrapper:
   
   def get_similar_tweets(self, tweet_id, limit=15):
     # get the tweet
-    self.api.statuses_lookup([tweet_id])[0]._json
+    tweet_obj = self.api.statuses_lookup([tweet_id])[0]._json
     # extract entities
-    # filter similarities
-    # repeat if less than 15
+    # rakshithn's code
 
+    # filter similarities
+    # use Infersent
+    
+    # repeat if less than 15
+    
