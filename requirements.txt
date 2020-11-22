@@ -2,3 +2,5 @@ Flask==1.1.2
 tweepy>=3.9.0
 TwitterSearch==1.0.2
 spacy==2.3.2
+torch==1.7
+nltk==3.5
