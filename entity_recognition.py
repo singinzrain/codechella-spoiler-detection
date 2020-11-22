@@ -3,16 +3,16 @@ from typing import List
 import spacy
 nlp = spacy.load("en_core_web_sm")
 # example text
-text = """First of all, my obvious answer is Grave of The Fireflies. The emotional labor--no thank you. Second of all, the less obvious answer is A Whisker Away, because it was so well-made and relatable in my opinion that I was crying throughout.
-        Third of all (yes), the least obvious answer is Perfect Blue. Even I couldn't believe that I was willing to watch Hereditary once....twice....but not Perfect Blue. 
-        It was definitely ahead of its time though.Maybe it's just me, but animations hit me deeper in the feels."""
-
-text2 = '''I was still a little mind-boggled the first time I watched Inception, but I got the basic gist of what was going on and how it all worked; 
-with Interstellar and Tenet, when I looked things up on Wikipedia, there were several moments of "Wait, that happened?" "They said that?"'''
-doc = nlp(text2)
-for ent in doc.ents:
-    print(ent.text, ent.label_)
-
+# text = """First of all, my obvious answer is Grave of The Fireflies. The emotional labor--no thank you. Second of all, the less obvious answer is A Whisker Away, because it was so well-made and relatable in my opinion that I was crying throughout.
+#         Third of all (yes), the least obvious answer is Perfect Blue. Even I couldn't believe that I was willing to watch Hereditary once....twice....but not Perfect Blue.
+#         It was definitely ahead of its time though.Maybe it's just me, but animations hit me deeper in the feels."""
+#
+# text2 = '''I was still a little mind-boggled the first time I watched Inception, but I got the basic gist of what was going on and how it all worked;
+# with Interstellar and Tenet, when I looked things up on Wikipedia, there were several moments of "Wait, that happened?" "They said that?"'''
+# doc = nlp(text2)
+# for ent in doc.ents:
+#     print(ent.text, ent.label_)
+#
 
 def get_entities(text: str) -> List[str]:
     doc = nlp(text)
