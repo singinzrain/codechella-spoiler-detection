@@ -8,9 +8,17 @@ Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-Bring up flask app:
+```
+python -m spacy download en_core_web_sm
+```
+Bring up flask app: (localhost:5000)
 ```bash
 flask run
+```
+Bring up React app: (localhost:3000)
+```bash
+cd /frontend
+npm start
 ```
 
 ## Contributors
