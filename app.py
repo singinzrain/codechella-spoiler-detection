@@ -36,18 +36,20 @@ def get_tweet_list():
 def get_similar_tweets(tweet_id: str):
     tweets = []
     # get the tweet
-    tweet = TweepyWrapper().get_tweet(tweet_id)
+    tweet = TweepyWrapper().get_tweet("1330311987075682304")
     original = Tweet.parse_from_status(tweet)
 
     # extract entities
     entities: List[str] = get_entities(original.text)
-    keyword = "%20".join(entities)
 
     retry_count = 0;
     while len(tweets) < 15 or retry_count < 5:
         # find tweets with entities
-        TweepyWrapper().get_tweets_by_keyword(keyword=keyword, limit=15)
-        potential_tweets: List[Tweet] = []
+        statuses = []
+        for entity in entities:
+            statuses.extend(TweepyWrapper().get_tweets_by_keyword(keyword=entity, limit=15))
+
+        potential_tweets: List[Tweet] = [Tweet.parse_from_status(t) for t in statuses]
 
         # filter similarities
         for potential_tweet in potential_tweets:

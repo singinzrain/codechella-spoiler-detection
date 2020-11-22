@@ -39,4 +39,5 @@ class TweepyWrapper:
   def get_tweet(self, tweet_id) -> Status:
     tweet = self.api.statuses_lookup([tweet_id])
     print(tweet[0])
+    return tweet[0]
 
